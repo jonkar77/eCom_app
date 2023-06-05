@@ -29,76 +29,86 @@ class LoginScreen extends StatelessWidget {
             10.heightBox,
             "Log in to $appname".text.fontFamily(bold).white.size(18).make(),
             10.heightBox,
-            Column(
-              children: [
-                customTxtField(
-                    hint: emailHint,
-                    title: email,
-                    isPass: false,
-                    controller: controlle.emailController),
-                customTxtField(
-                    hint: passHint,
-                    title: password,
-                    isPass: true,
-                    controller: controlle.passwordController),
-                Align(
-                    alignment: Alignment.bottomRight,
-                    child: TextButton(
-                        onPressed: () {}, child: forgetPass.text.make())),
-                5.heightBox,
-                button(
-                    color: redColor,
-                    title: login,
-                    textColor: whiteColor,
-                    onPress: () async {
-                      await controlle
-                          .loginMethod(context: context)
-                          .then((value) {
-                        if (value != null) {
-                          VxToast.show(context, msg: loggedin);
-                          Get.offAll(() => const Home());
-                        }
-                      });
-                    }).box.width(context.screenWidth - 50).make(),
-                5.heightBox,
-                Text("or"),
-                5.heightBox,
-                createNewAccount.text.color(fontGrey).make(),
-                5.heightBox,
-                button(
-                    color: Colors.amberAccent,
-                    title: signup,
-                    textColor: redColor,
-                    onPress: () {
-                      Get.to(() => SignupScreen());
-                    }).box.width(context.screenWidth - 50).make(),
-                10.heightBox,
-                loginWith.text.color(fontGrey).make(),
-                5.heightBox,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: List.generate(
-                      3,
-                      (index) => Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: CircleAvatar(
-                              backgroundColor: lightGrey,
-                              radius: 25,
-                              child: Image.asset(
-                                socialIconList[index],
-                                width: 30,
+            Obx(
+              () => Column(
+                children: [
+                  customTxtField(
+                      hint: emailHint,
+                      title: email,
+                      isPass: false,
+                      controller: controlle.emailController),
+                  customTxtField(
+                      hint: passHint,
+                      title: password,
+                      isPass: true,
+                      controller: controlle.passwordController),
+                  Align(
+                      alignment: Alignment.bottomRight,
+                      child: TextButton(
+                          onPressed: () {}, child: forgetPass.text.make())),
+                  5.heightBox,
+                  controlle.isloading.value
+                      ? CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation(redColor),
+                  )
+                      : button(
+                          color: redColor,
+                          title: login,
+                          textColor: whiteColor,
+                          onPress: () async {
+                            controlle.isloading(true);
+
+                            await controlle
+                                .loginMethod(context: context)
+                                .then((value) {
+                              if (value != null) {
+                                VxToast.show(context, msg: loggedin);
+                                Get.offAll(() => const Home());
+                              }else{
+                                controlle.isloading(false);
+                              }
+                            });
+                          }).box.width(context.screenWidth - 50).make(),
+                  5.heightBox,
+                  Text("or"),
+                  5.heightBox,
+                  createNewAccount.text.color(fontGrey).make(),
+                  5.heightBox,
+                  button(
+                      color: Colors.amberAccent,
+                      title: signup,
+                      textColor: redColor,
+                      onPress: () {
+                        Get.to(() => SignupScreen());
+                      }).box.width(context.screenWidth - 50).make(),
+                  10.heightBox,
+                  loginWith.text.color(fontGrey).make(),
+                  5.heightBox,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(
+                        3,
+                        (index) => Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: CircleAvatar(
+                                backgroundColor: lightGrey,
+                                radius: 25,
+                                child: Image.asset(
+                                  socialIconList[index],
+                                  width: 30,
+                                ),
                               ),
-                            ),
-                          )),
-                ),
-              ],
-            )
-                .box
-                .white
-                .rounded
-                .padding(EdgeInsets.all(16))
-                .width(context.screenWidth - 70)
-                .make(),
+                            )),
+                  ),
+                ],
+              )
+                  .box
+                  .white
+                  .rounded
+                  .padding(EdgeInsets.all(16))
+                  .width(context.screenWidth - 70)
+                  .make(),
+            ),
           ],
         ),
       ),

@@ -46,8 +46,7 @@ class AccountScreen extends StatelessWidget {
                                     color: Colors.white,
                                   )).onTap(() {
                                 controller.nameController.text = data['name'];
-                                controller.passController.text =
-                                    data['password'];
+
 
                                 Get.to(() => EditProfile(data: data));
                               })),

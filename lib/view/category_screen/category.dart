@@ -1,4 +1,5 @@
 import 'package:ecom/consts/list.dart';
+import 'package:ecom/controller/product_controller.dart';
 import 'package:ecom/view/category_screen/details.dart';
 import 'package:ecom/widgets_common/bg_widget.dart';
 import 'package:get/get.dart';
@@ -11,6 +12,8 @@ class CatScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    var controller=Get.put(ProductController());
     return bgWidget(
         child: Scaffold(
       appBar: AppBar(
@@ -51,6 +54,7 @@ class CatScreen extends StatelessWidget {
                   .outerShadow
                   .make()
                   .onTap(() {
+                    controller.getSubCategories(categoriesList[index]);
                 Get.to(() => CategoryDetails(
                       title: categoriesList[index],
                     ));

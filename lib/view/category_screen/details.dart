@@ -111,7 +111,7 @@ class CategoryDetails extends StatelessWidget {
                                         .make()
                                         .onTap(() {
                                       Get.to(() =>
-                                          ItemDetails(title: "${data[index]['p_name']}"));
+                                          ItemDetails(title: "${data[index]['p_name']}", data: data[index]));
                                     }),
                                   );
                                 }),

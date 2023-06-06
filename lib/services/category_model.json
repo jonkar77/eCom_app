@@ -1,0 +1,28 @@
+{
+  "categories": [
+    {
+      "name": "Women Clothing",
+      "subcategories": [
+        "Wedding",
+        "Tops & sets",
+        "Watches"
+      ]
+    },
+    {
+      "name": "Men Clothing",
+      "subcategories": [
+        "Wedding",
+        "Formals",
+        "Watches"
+      ]
+    },
+    {
+      "name": "Computer Accessories",
+      "subcategories": [
+        "Monitors",
+        "Cpu/Gpu",
+        "Processors"
+      ]
+    }
+  ]
+}

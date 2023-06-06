@@ -30,7 +30,7 @@ class EditProfile extends StatelessWidget {
                     .roundedFull
                     .clip(Clip.antiAlias)
                     .make()
-            //if data is not empty but controller path is empty
+                //if data is not empty but controller path is empty
                 : data['imageUrl'] != '' && controller.profileImgPath.isEmpty
                     ? Image.network(data['imageUrl'],
                             width: 100, fit: BoxFit.cover)
@@ -38,7 +38,7 @@ class EditProfile extends StatelessWidget {
                         .roundedFull
                         .clip(Clip.antiAlias)
                         .make()
-            //if both are empty
+                    //if both are empty
                     : Image.file(
                         File(controller.profileImgPath.value),
                         width: 100,
@@ -49,7 +49,7 @@ class EditProfile extends StatelessWidget {
                 color: redColor,
                 onPress: () {
                   controller.changeImage(context);
-                  // Get.find<ProfileContoller>().changeImage(context);
+                  // Get.find<ProfileC  ontoller>().changeImage(context);
                 },
                 title: "Change",
                 textColor: Colors.white),
@@ -60,10 +60,17 @@ class EditProfile extends StatelessWidget {
                 hint: nameHint,
                 title: name,
                 isPass: false),
+            10.heightBox,
             customTxtField(
-                controller: controller.passController,
+                controller: controller.oldpassController,
                 hint: passHint,
-                title: password,
+                title: oldpass,
+                isPass: true),
+            10.heightBox,
+            customTxtField(
+                controller: controller.newpassController,
+                hint: passHint,
+                title: newpass,
                 isPass: true),
             20.heightBox,
             controller.isloading.value
@@ -76,12 +83,32 @@ class EditProfile extends StatelessWidget {
                         color: redColor,
                         onPress: () async {
                           controller.isloading(true);
-                          await controller.uploadProfileImage();
-                          await controller.updateProfile(
-                              name: controller.nameController.text,
-                              password: controller.passController.text,
-                              imgUrl: controller.profileImgLink);
-                          VxToast.show(context, msg: 'Uploaded');
+                          //if image is not selected
+                          if (controller.profileImgPath.value.isNotEmpty) {
+                            await controller.uploadProfileImage();
+                          } else {
+                            controller.profileImgLink = data['imageUrl'];
+                          }
+
+                          //if old password matches database
+                          if (data['password'] ==
+                              controller.oldpassController.text) {
+                            await controller.changeAuthPassword(
+                              email: data['email'],
+                              password: controller.oldpassController.text,
+                              newpass: controller.newpassController.text,
+                            );
+
+                            await controller.updateProfile(
+                                name: controller.nameController.text,
+                                password: controller.newpassController.text,
+                                imgUrl: controller.profileImgLink);
+                            VxToast.show(context, msg: 'Updated');
+                          } else {
+                            VxToast.show(context,
+                                msg: "Wrong current password");
+                            controller.isloading(false);
+                          }
                         },
                         title: "Save",
                         textColor: Colors.white))

@@ -62,3 +62,4 @@ const orders="My Orders",
     wishlist="My Wishlist",
     messages="Messages";
 
+const paypal="Paypal", stripe="Stripe", cod="Cash on delivery";

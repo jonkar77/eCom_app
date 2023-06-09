@@ -1,6 +1,7 @@
 import 'package:ecom/consts/consts.dart';
 import 'package:ecom/consts/list.dart';
 import 'package:ecom/controller/product_controller.dart';
+import 'package:ecom/view/chat_screen/chat_screen.dart';
 import 'package:ecom/widgets_common/button.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -34,15 +35,28 @@ class ItemDetails extends StatelessWidget {
           title: title!.text.fontFamily(bold).color(darkFontGrey).make(),
           actions: [
             IconButton(
-                onPressed: () {},
+                onPressed: () {
+                },
                 icon: Icon(
                   Icons.share,
                 )),
-            IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.favorite_border,
-                )),
+            Obx(
+                ()=> IconButton(
+                  onPressed: () {
+                    if (controller.isFav.value) {
+                      controller.removeFromWishlist(data.id, context);
+                      controller.isFav(false);
+                    } else {
+                      controller.addToWishlist(data.id, context);
+                      controller.isFav(true);
+
+                    }
+                  },
+                  icon: Icon(
+                    controller.isFav.value? Icons.favorite: Icons.favorite_border,
+                      color: controller.isFav.value ? redColor : darkFontGrey,
+                  )),
+            ),
           ],
         ),
         body: Column(
@@ -118,7 +132,10 @@ class ItemDetails extends StatelessWidget {
                           backgroundColor: Colors.white,
                           child: Icon(Icons.messenger_rounded,
                               color: darkFontGrey),
-                        )
+                        ).onTap(() {
+                          Get.to(() => const ChatScreen(),
+                              arguments: [data['p_seller'], data['vendor_id']]);
+                        })
                       ],
                     )
                         .box
